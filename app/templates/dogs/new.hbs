@@ -1,0 +1,88 @@
+<form id="new-dog-form" {{on "submit" this.addDog}}>
+    <div class="form-group mb-3">
+        <label>Name</label>
+        <input type="text" class="form-control" placeholder="Enter Name" value={{this.newDog.name}} {{on "input" (fn
+            this.updateValue "name" )}} required />
+    </div>
+
+    <div class="form-group mb-3">
+        <label>Breed</label>
+        <input type="text" class="form-control" placeholder="Enter Breed" value={{this.newDog.breed}} {{on "input" (fn
+            this.updateValue "breed" )}} required />
+    </div>
+
+    <div class="form-group mb-3">
+        <label>Owner</label>
+        <input type="text" class="form-control" placeholder="Enter Owner" value={{this.newDog.owner}} {{on "input" (fn
+            this.updateValue "owner" )}} required />
+    </div>
+
+    <div class="form-group mb-3">
+        <label>Description</label>
+        <textarea class="form-control" placeholder="Enter Description" value={{this.newDog.description}} {{on "input"
+            (fn this.updateValue "description" )}} required></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label><b>Size</b></label>
+        <div class="mt-2 mb-2">
+            <label class="me-3">
+                <input type="radio" name="size" value="XS" {{on "change" (fn this.updateValue "size" )}} /> Extra Small
+            </label>
+            <label class="me-3">
+                <input type="radio" name="size" value="SM" {{on "change" (fn this.updateValue "size" )}} /> Small
+            </label>
+            <label class="me-3">
+                <input type="radio" name="size" value="MD" {{on "change" (fn this.updateValue "size" )}} /> Medium
+            </label>
+        </div>
+        <div>
+            <label class="me-3">
+                <input type="radio" name="size" value="LG" {{on "change" (fn this.updateValue "size" )}} /> Large
+            </label>
+            <label class="me-3">
+                <input type="radio" name="size" value="XL" {{on "change" (fn this.updateValue "size" )}} /> Extra Large
+            </label>
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <label><b>Meals</b></label>
+        <div class="container">
+            <div class="meal-input-group pl-4">
+                <label>Breakfast</label>
+                <input type="text" class="form-control meal-description" value={{this.newDog.meals.breakfast}}
+                    {{on "input" (fn this.updateMealValue "breakfast" )}} />
+            </div>
+            <div class="meal-input-group pl-4">
+                <label>Dinner</label>
+                <input type="text" class="form-control meal-description" value={{this.newDog.meals.dinner}} {{on "input"
+                    (fn this.updateMealValue "dinner" )}} />
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group mb-4" id="activities">
+        <label><b>Activities</b></label>
+        {{#each this.newDog.activities as |activity index|}}
+        <div class="row activity-input-group mb-2">
+            <div class="col-sm-9">
+                <input type="text" class="form-control activity-description" value={{activity}} {{on "input" (fn
+                    this.updateActivityValue index )}} />
+            </div>
+            <div class="col-sm-3">
+                <button class="btn btn-outline-secondary" type="button" {{on "click" (fn this.removeActivity
+                    index)}}>Remove</button>
+            </div>
+        </div>
+        {{/each}}
+        <button type="button" class="btn btn-outline-primary" {{on "click" this.addActivity}}>Add Activity</button>
+    </div>
+
+    <hr>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary me-2">Add Dog</button>
+        <LinkTo @route="dogs" class='btn btn-dark'>Close</LinkTo>
+    </div>
+</form>

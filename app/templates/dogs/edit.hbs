@@ -1,0 +1,94 @@
+<form {{on "submit" this.saveChanges}}>
+    <div class="form-group mb-3">
+        <label>Name</label>
+        <input type="text" class="form-control" placeholder="Enter Name" value={{this.tempDog.name}} {{on "input" (fn
+            this.updateValue "name" )}} required oninvalid="this.setCustomValidity('Please enter a name.')"
+            onchange="this.setCustomValidity('')" />
+    </div>
+
+    <div class="form-group mb-3">
+        <label>Breed</label>
+        <input type="text" class="form-control" placeholder="Enter Breed" value={{this.tempDog.breed}} {{on "input" (fn
+            this.updateValue "breed" )}} />
+    </div>
+
+    <div class="form-group mb-3">
+        <label>Owner</label>
+        <input type="text" class="form-control" placeholder="Enter Owner" value={{this.tempDog.owner}} {{on "input" (fn
+            this.updateValue "owner" )}} />
+    </div>
+
+    <div class="form-group mb-3">
+        <label>Description</label>
+        <textarea class="form-control" placeholder="Enter Description" value={{this.tempDog.description}} {{on "input"
+            (fn this.updateValue "description" )}}></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label><b>Size</b></label>
+        <div class="mt-2 mb-2">
+            <label class="me-3">
+                <input type="radio" name="size" value="XS" {{on "change" (fn this.updateValue "size" )}} checked={{if
+                    (eq this.tempDog.size "XS" ) "checked" }} /> Extra Small
+            </label>
+            <label class="me-3">
+                <input type="radio" name="size" value="SM" {{on "change" (fn this.updateValue "size" )}} checked={{if
+                    (eq this.tempDog.size "SM" ) "checked" }} /> Small
+            </label>
+            <label class="me-3">
+                <input type="radio" name="size" value="MD" {{on "change" (fn this.updateValue "size" )}} checked={{if
+                    (eq this.tempDog.size "MD" ) "checked" }} /> Medium
+            </label>
+        </div>
+        <div>
+            <label class="me-3">
+                <input type="radio" name="size" value="LG" {{on "change" (fn this.updateValue "size" )}} checked={{if
+                    (eq this.tempDog.size "LG" ) "checked" }} /> Large
+            </label>
+            <label class="me-3">
+                <input type="radio" name="size" value="XL" {{on "change" (fn this.updateValue "size" )}} checked={{if
+                    (eq this.tempDog.size "XL" ) "checked" }} /> Extra Large
+            </label>
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <label><b>Meals</b></label>
+        <div class="container">
+            <div class="meal-input-group pl-4">
+                <label>Breakfast</label>
+                <input type="text" class="form-control meal-description" value={{this.tempDog.meals.breakfast}}
+                    {{on "input" (fn this.updateMealValue "breakfast" )}} />
+            </div>
+            <div class="meal-input-group pl-4">
+                <label>Dinner</label>
+                <input type="text" class="form-control meal-description" value={{this.tempDog.meals.dinner}}
+                    {{on "input" (fn this.updateMealValue "dinner" )}} />
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group mb-4" id="activities">
+        <label><b>Activities</b></label>
+        {{#each this.tempDog.activities as |activity index|}}
+        <div class="row activity-input-group mb-2">
+            <div class="col-sm-9">
+                <input type="text" class="form-control activity-description" value={{activity}} {{on "input" (fn (mut
+                    (get this.tempDog.activities index)))}} />
+            </div>
+            <div class="col-sm-3">
+                <button class="btn btn-outline-secondary" type="button" {{on "click" (fn this.removeActivity
+                    index)}}>Remove</button>
+            </div>
+        </div>
+        {{/each}}
+        <button type="button" class="btn btn-outline-primary" {{on "click" this.addActivity}}>Add Activity</button>
+    </div>
+
+    <hr>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary me-2">Update</button>
+        <LinkTo @route="dogs" class='btn btn-dark'>Close</LinkTo>
+    </div>
+</form>

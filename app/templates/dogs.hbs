@@ -1,0 +1,96 @@
+<div class="row">
+    <div class="col-md-4">
+        <LinkTo @route="dogs.new" class='btn btn-success'>
+            New Dog
+        </LinkTo>
+        <hr>
+        {{outlet}}
+    </div>
+    <div class="col-md-7 ms-5">
+        <div class="row">
+            <div class="col-md-12">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" {{on "input" this.updateFilter}}
+                                    placeholder="Search dogs (name)" />
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-control" {{on "change" this.updateSortOrder}}>
+                                    <option value="">Sort by...</option>
+                                    <option value="name">Name</option>
+                                    <option value="owner">Owner</option>
+                                    <option value="breed">Breed</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-control" {{on "change" this.updateBreedFilter}}>
+                                    <option value="">All breeds</option>
+                                    {{#each this.uniqueBreeds as |breed|}}
+                                    <option value={{breed}}>{{breed}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <hr><br>
+        <div class="row">
+            {{#each this.filteredDogs as |dog|}}
+            <div class="col-md-12">
+                <div class="card bg-light mb-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <h4>{{dog.name}}</h4>
+                                <p>{{dog.description}}</p>
+                                <button class="btn btn-primary" type="button" {{action (toggle "showDetails" dog)}}>
+                                    {{#if dog.showDetails}}Hide{{else}}Details{{/if}}
+                                </button>
+                            </div>
+                            <div class="col-sm-4">
+                                <img src={{this.dogs.getDogBreedImage dog.breed}} alt={{dog.breed}} class="img-fluid" height="175" width="175">
+                            </div>
+                        </div>
+
+                        {{#if dog.showDetails}}
+                        <div class="row mt-3">
+                            <div class="col-sm-6">
+                                <h5 class="mb-3">Owner:</h5>
+                                <p>{{dog.owner}}</p>
+                                <h5 class="mb-3">Breed:</h5>
+                                <p>{{dog.breed}}</p>
+                                <h5 class="mb-3">Size:</h5>
+                                <p>{{size-word dog.size}}</p>
+                            </div>
+                            <div class="col-sm-6">
+                                <h5>Meals</h5>
+                                <ul>
+                                    <li>Breakfast: {{dog.meals.breakfast}}</li>
+                                    <li>Dinner: {{dog.meals.dinner}}</li>
+                                </ul>
+
+                                <h5>Activities</h5>
+                                <ul>
+                                    {{#each dog.activities as |activity|}}
+                                    <li>{{activity}}</li>
+                                    {{/each}}
+                                </ul>
+                            </div>
+                        </div>
+                        <LinkTo class="btn btn-dark" @route="dogs.edit" @model={{dog}}>Edit</LinkTo>
+                        <button class="btn btn-danger float-right mr-2" type="button" {{on "click" (fn this.deleteDog
+                            dog)}}>
+                            Delete
+                        </button>
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</div>
